@@ -1,0 +1,9 @@
+django
+djangorestframework
+markdown
+django-filter
+mysql-python
+djangorestframework
+django-countries
+djangorestframework-jwt
+
