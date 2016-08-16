@@ -20,8 +20,11 @@ class ClientViewSet(viewsets.ViewSet):
     # authentication_classes = (SessionAuthentication, BasicAuthentication)
     permission_classes = [IsCreationOrIsAuthenticated, ]
 
-    def get(self, request):
-        serializer = AiklagUser(request.user)
+    def get(self, request, pk=None):
+        if pk:
+            client = AiklagUser.objects.get(pk=pk)
+            self.check_object_permissions(self.request, obj=client)
+        serializer = ClientSerializer(request.user)
         return Response(serializer.data)
 
     def create(self, request):
@@ -35,9 +38,11 @@ class ClientViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         pass
 
-    def update(self, request, pk=None):
-
-        pass
+    def update(self, request):
+        serializer = ClientSerializer(request.user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     def partial_update(self, request, pk=None):
         pass
